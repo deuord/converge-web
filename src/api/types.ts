@@ -17,6 +17,8 @@ export interface DoneEvent {
 
 export interface ErrorEvent {
   type: 'error';
+  /** 统一错误码(见后端 common/response.py):404 会话不存在/已删除,502 LLM 调用失败,500 其他 */
+  code: number;
   message: string;
 }
 
@@ -64,8 +66,12 @@ export interface ChatRequest {
   model?: string;
 }
 
+/** 后端统一返回 envelope(见 common/response.py):{code, message, data},code=200 成功 */
 export interface HealthResponse {
-  status: string;
-  default: string;
-  models: string[];
+  code: number;
+  message: string;
+  data: {
+    default: string;
+    models: string[];
+  };
 }

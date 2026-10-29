@@ -42,9 +42,10 @@ export async function streamChat(
   await readSSE(res, onEvent);
 }
 
-/** GET /api/health:启动时探测后端可达性,拿默认模型与模型列表 */
-export async function fetchHealth(signal?: AbortSignal): Promise<HealthResponse> {
+/** GET /api/health:启动时探测后端可达性,拿默认模型与模型列表(返回 envelope 里的 data) */
+export async function fetchHealth(signal?: AbortSignal): Promise<HealthResponse['data']> {
   const res = await fetch('/api/health', { signal });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  const body: HealthResponse = await res.json();
+  return body.data;
 }

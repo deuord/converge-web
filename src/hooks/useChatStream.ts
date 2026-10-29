@@ -49,8 +49,8 @@ export function useChatStream() {
             break;
           case 'error':
             patch((m) => ({ ...m, status: 'error', errorMessage: ev.message }));
-            // 后端报 session 不存在/已删除:回退为新会话
-            if (ev.message.includes('session')) setSessionId(null);
+            // 404 = session 不存在/已删除:回退为新会话
+            if (ev.code === 404) setSessionId(null);
             break;
           case 'tool_call':
           case 'confirm_request':
