@@ -11,7 +11,7 @@
 
 **v1 做（只对接后端已有能力）：**
 
-- 流式多轮对话：`POST /api/chat`（SSE 流），首帧 `session` 拿 session_id，后续请求带上即续接多轮
+- 流式多轮对话：`POST /api/v1/chat`（SSE 流），首帧 `session` 拿 session_id，后续请求带上即续接多轮
 - 模型切换：`ChatRequest.model`（`models.yaml` 别名，空=默认）
 - 健康检查：`GET /api/health`（启动时探测后端是否可达）
 - 双主题（深/浅，右上角切换，持久化）
@@ -48,7 +48,7 @@ converge-web/
 ├── src/
 │   ├── main.tsx / App.tsx
 │   ├── api/types.ts            # SSE 事件联合类型（对齐 agent/events.py）
-│   ├── api/client.ts           # /api/chat 流式封装 + /api/health
+│   ├── api/client.ts           # /api/v1/chat 流式封装 + /api/health
 │   ├── hooks/useChatStream.ts  # 会话/消息流状态机
 │   ├── components/             # IconRail / SessionPanel / ChatStream / MessageBubble / Composer / TaskDrawer / ThemeToggle / ModelSelect
 │   └── styles/theme.css        # 双主题 CSS 变量
@@ -57,7 +57,7 @@ converge-web/
 
 ## 6. 数据流
 
-1. Composer 发送 → `useChatStream` → `fetch` POST `/api/chat`（body: `content` / `session_id` / `model`）
+1. Composer 发送 → `useChatStream` → `fetch` POST `/api/v1/chat`（body: `content` / `session_id` / `model`）
 2. 用 `ReadableStream` 按 SSE 帧解析 `data: {...}`（`EventSource` 不支持 POST，故直接读流）
 3. 事件处理：
    - `session`：存 session_id

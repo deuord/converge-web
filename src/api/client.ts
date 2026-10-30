@@ -18,7 +18,7 @@ async function readSSE(res: Response, onEvent: (ev: ServerEvent) => void): Promi
 }
 
 /**
- * POST /api/chat:流式对话,逐个回调 SSE 事件。
+ * POST /api/v1/chat:流式对话,逐个回调 SSE 事件。
  * 连接失败(fetch 抛错 / 非 2xx)抛异常;事件级错误走 error 事件不抛。
  */
 export async function streamChat(
@@ -26,7 +26,7 @@ export async function streamChat(
   onEvent: (ev: ServerEvent) => void,
   signal?: AbortSignal,
 ): Promise<void> {
-  const res = await fetch('/api/chat', {
+  const res = await fetch('/api/v1/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
