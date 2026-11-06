@@ -1,13 +1,17 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import styles from '../styles/app.module.css';
 import { SendIcon } from './icons';
+import { ModelSelect } from './ModelSelect';
 
 interface Props {
   onSend: (content: string) => void;
   disabled: boolean;
+  models: string[];
+  model: string;
+  onModelChange: (m: string) => void;
 }
 
-export function Composer({ onSend, disabled }: Props) {
+export function Composer({ onSend, disabled, models, model, onModelChange }: Props) {
   const [value, setValue] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -38,9 +42,12 @@ export function Composer({ onSend, disabled }: Props) {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={onKeyDown}
         />
-        <button className={styles.sendBtn} title="发送" disabled={disabled} onClick={submit}>
-          <SendIcon />
-        </button>
+        <div className={styles.composerBar}>
+          <ModelSelect models={models} value={model} onChange={onModelChange} />
+          <button className={styles.sendBtn} title="发送" disabled={disabled} onClick={submit}>
+            <SendIcon />
+          </button>
+        </div>
       </div>
     </div>
   );

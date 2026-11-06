@@ -6,25 +6,7 @@
   color: var(--text);
 }
 
-/* 左图标栏 */
-.iconRail {
-  width: 56px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 0;
-  background: var(--bg-rail);
-  border-right: 1px solid var(--border);
-}
-
-.logo {
-  display: flex;
-  margin-bottom: 8px;
-  color: var(--accent);
-}
-
+/* 面板切换/抽屉共用的图标按钮 */
 .iconBtn {
   display: flex;
   align-items: center;
@@ -38,55 +20,187 @@
 }
 
 .iconBtn:hover {
-  background: var(--bg-input);
+  background: var(--bg-hover);
   color: var(--text);
 }
 
-/* 会话栏 */
+/* 会话栏:悬浮卡片贴左边缘,宽度由 App 拖拽控制(inline style 覆盖) */
 .sessionPanel {
   width: 232px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin: 12px 0;
   padding: 16px 12px;
   background: var(--bg-panel);
-  border-right: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-panel);
 }
 
-.panelTitle {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
+/* 面板与主区之间的拖拽调宽手柄;拖到阈值以下松手即关闭面板 */
+.resizer {
+  width: 8px;
+  flex-shrink: 0;
+  margin: 12px 0;
+  cursor: col-resize;
+  background: transparent;
+  border-radius: 4px;
 }
 
-.newChatBtn {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-input);
+.resizer:hover {
+  background: var(--accent-soft);
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0;
+  background: var(--bg-panel);
+  border-radius: 16px;
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+
+/* 品牌标题:Agent 名字 */
+.brandTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   color: var(--text);
-  font-size: 13px;
-  text-align: left;
 }
 
-.newChatBtn:hover {
-  border-color: var(--accent);
+/* 新建任务:无边框文字按钮 */
+.newTaskBtn {
+  padding: 6px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.newTaskBtn:hover {
+  background: var(--bg-hover);
   color: var(--accent);
 }
 
-.sessionInfo {
+/* "最近"分组折叠头 */
+.groupHeader {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
 }
 
-.sessionId {
-  font-family: var(--font-mono);
-  font-size: 12px;
+.groupHeader:hover {
+  color: var(--text);
+}
+
+.groupChevron {
+  display: flex;
+  transition: transform 0.15s ease;
+}
+
+.groupChevronCollapsed {
+  transform: rotate(-90deg);
+}
+
+.sessionList {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sessionItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px 4px 4px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+}
+
+.sessionItem:hover {
+  background: var(--bg-hover);
+  box-shadow: var(--shadow-item);
+}
+
+.sessionItemActive,
+.sessionItemActive:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: var(--shadow-item);
+}
+
+.sessionItemMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sessionItemTitle {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sessionItemTime {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.sessionDelete {
+  flex-shrink: 0;
+  padding: 4px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.sessionDelete svg {
+  width: 12px;
+  height: 12px;
+}
+
+.sessionItem:hover .sessionDelete {
+  opacity: 1;
+}
+
+.sessionDelete:hover {
+  color: var(--danger);
+  background: var(--danger-bg);
 }
 
 .panelHint {
@@ -95,31 +209,28 @@
   color: var(--text-muted);
 }
 
-.sessionInfo + .panelHint {
-  margin-top: auto;
-}
-
-/* 主区 */
-.main {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
 .topbar {
   height: 52px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--border);
+  padding: 0 12px;
+}
+
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .topbarTitle {
   font-size: 15px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .topbarActions {
@@ -128,18 +239,25 @@
   gap: 8px;
 }
 
+/* 模型选择:无边框,仅文字+原生下拉箭头,置于输入框底栏右侧 */
 .select {
-  padding: 6px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-input);
-  color: var(--text);
+  padding: 6px 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
   font-size: 13px;
   outline: none;
+  cursor: pointer;
+}
+
+.select:hover {
+  color: var(--text);
 }
 
 .banner {
   padding: 8px 16px;
+  margin: 0 12px;
+  border-radius: 10px;
   background: var(--danger-bg);
   color: var(--danger);
   font-size: 13px;
@@ -223,7 +341,7 @@
 .markdown pre {
   padding: 12px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--bg-code);
   overflow-x: auto;
 }
@@ -292,27 +410,34 @@
 .composer {
   flex-shrink: 0;
   padding: 12px 24px 16px;
-  border-top: 1px solid var(--border);
 }
 
 .composerInner {
   max-width: 860px;
   margin: 0 auto;
   display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  padding: 8px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--bg-input);
+  box-shadow: var(--shadow-item);
 }
 
 .composerInner:focus-within {
   border-color: var(--accent);
 }
 
+.composerBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .textarea {
-  flex: 1;
+  width: 100%;
   min-height: 40px;
   max-height: 200px;
   padding: 8px;
@@ -346,36 +471,16 @@
   cursor: default;
 }
 
-/* 右侧任务抽屉:收起=窄图标条,展开=面板 */
-.drawer {
-  display: flex;
-  width: 48px;
-  flex-shrink: 0;
-  overflow: hidden;
-  background: var(--bg-panel);
-  border-left: 1px solid var(--border);
-  transition: width 0.2s ease;
-}
-
-.drawerOpen {
-  width: 320px;
-}
-
-.drawerStrip {
-  width: 48px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 0;
-}
-
+/* 右侧任务抽屉:悬浮卡片贴右边缘,开合由顶栏右上按钮控制,宽度可拖拽(inline style 覆盖) */
 .drawerPanel {
-  width: 272px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--border);
+  margin: 12px 0;
+  background: var(--bg-panel);
+  border-radius: 16px;
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
 }
 
 .drawerHeader {
@@ -406,7 +511,7 @@
 .taskCard {
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--bg-input);
 }
 

@@ -67,11 +67,43 @@ export interface ChatRequest {
 }
 
 /** 后端统一返回 envelope(见 common/response.py):{code, message, data},code=200 成功 */
-export interface HealthResponse {
+export interface Envelope<T> {
   code: number;
   message: string;
-  data: {
-    default: string;
-    models: string[];
-  };
+  data: T;
+}
+
+export interface HealthData {
+  default: string;
+  models: string[];
+}
+
+export type HealthResponse = Envelope<HealthData>;
+
+/** GET /api/v1/sessions 列表项(后端 api/router_session.py 的 SessionOut) */
+export interface SessionSummary {
+  session_id: string;
+  /** 首轮用户消息截断生成;null = 还没聊过,前端兜底"新对话" */
+  title: string | null;
+  model: string | null;
+  /** 回合断点,v1 不用 */
+  pending: Record<string, unknown> | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** GET /api/v1/sessions/{id}/messages 列表项(MessageOut) */
+export interface HistoryMessage {
+  seq: number;
+  role: 'user' | 'assistant' | 'tool' | 'system';
+  content: string | null;
+  created_at: string;
+}
+
+/** 分页 data 结构(见后端 common/pagination.page_data) */
+export interface PageData<T> {
+  items: T[];
+  total: number;
+  page: number;
+  page_size: number;
 }
